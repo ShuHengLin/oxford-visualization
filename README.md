@@ -29,13 +29,21 @@
 
 
 ## Usage
-* Calculate and generate lidar→radar transform
+* Calculate and generate lidar → radar transform:
 ```
 cd /path/to/oxford-visualization
 python -B caculate_transform.py
 ```
 8,866 .txt files will be generated in the oxford-visualization/calib folder.
 
+* Visualize camera image:
+```
+python -B vis_camera.py
+python -B vis_camera_lidar.py
+```
+The first code will perform **radar → camera** projection.
+
+The second code will perform **radar → lidar → camera** projection.
 
 ## References
 1) [The Oxford Radar RobotCar Dataset: A Radar Extension to the Oxford RobotCar Dataset](https://arxiv.org/abs/1909.01300)
