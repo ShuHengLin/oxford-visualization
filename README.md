@@ -29,9 +29,12 @@
 
 
 ## Usage
-* AAA
+* Calculate and generate lidar→radar transform
 ```
+cd /path/to/oxford-visualization
+python -B caculate_transform.py
 ```
+8,866 .txt files will be generated in the oxford-visualization/calib folder.
 
 
 ## References
