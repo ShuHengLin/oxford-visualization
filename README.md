@@ -8,7 +8,6 @@
 4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository.
 5) After unzipping the files, the directory should look like this:
 ```
-# Oxford Radar RobotCar Data Record
 |-- DATA_PATH
     |-- MVDNet
     |-- oxford-visualization
