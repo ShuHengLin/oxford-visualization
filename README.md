@@ -52,7 +52,7 @@ The first code will visualize the raw point cloud file **velodyne_right** and pr
 1) Project bounding boxes onto the lidar frame.
 2) Project the lidar pointcloud onto the radar frame.
 
-The second code will visualize the processed point cloud file **processed/lidar** and the bounding boxes on the radar frame.
+The second code will visualize the processed point cloud file **processed/lidar** and the bounding boxes.
 
 
 ## Visualize camera image:
