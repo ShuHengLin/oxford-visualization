@@ -57,8 +57,7 @@ python -B vis_lidar_processed.py
 python -B vis_camera.py
 python -B vis_camera_lidar.py
 ```
-The first code will perform **radar → camera** projection.
-
+The first code will perform **radar → camera** projection.  
 The second code will perform **radar → lidar → camera** projection.
 
 ---
