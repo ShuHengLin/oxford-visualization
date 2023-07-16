@@ -138,6 +138,8 @@ def box_to_marker(ob, cls, i):
 
 # ==================================================================================================================
 
+# https://www.brainvoyager.com/bv/doc/UsersGuide/CoordsAndTransforms/SpatialTransformationMatrices.html
+
 def inverse_trans_matrix(trans_matrix):
   inv_trans_rot = np.linalg.inv(trans_matrix[0:3, 0:3])
   inv_trans_rot = np.concatenate((inv_trans_rot, [[0, 0, 0]]), axis=0)
