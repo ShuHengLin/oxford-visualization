@@ -61,7 +61,7 @@ The first code will visualize the raw point cloud file **velodyne_right** and pr
 The second code will visualize the processed point cloud file **processed/lidar** and the bounding boxes.
 
 
-## Visualize camera image:
+## Visualize camera image
 ```
 python -B vis_camera.py
 python -B vis_camera_lidar.py
@@ -70,18 +70,20 @@ The first code will perform **radar → camera** projection.
 The second code will perform **radar → lidar → camera** projection.
 
 
-## Visualize radar image:
+## Visualize radar image
 ```
 python -B vis_radar.py
 ```
 Will visualize radar image and the 2d bounding boxes.
 
 
-## Visualize all:
+## Visualize all
 ```
 python -B vis_all.py
 ```
 
+## Video
+[![](https://img.youtube.com/vi/wvTzqsMHO6o/0.jpg)](https://youtu.be/wvTzqsMHO6o)
 
 ## References
 1) [The Oxford Radar RobotCar Dataset: A Radar Extension to the Oxford RobotCar Dataset](https://arxiv.org/abs/1909.01300)
