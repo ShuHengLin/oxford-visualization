@@ -26,6 +26,7 @@
         |-- velodyne_right.timestamps
         |-- ...
 ```
+
 * Prepare the processed radar & lidar data using MVDNet:
 ```
 cd /DATA_PATH/MVDNet
@@ -34,7 +35,6 @@ python -B data/sdk/prepare_lidar_data.py --data_path /DATA_PATH/2019-01-10-11-46
 ```
 Files will be generated in the **/DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k/processed** folder.
 
-## Usage
 * Calculate and generate lidar → radar transform:
 ```
 cd /DATA_PATH/oxford-visualization
@@ -42,26 +42,24 @@ python -B caculate_transform.py
 ```
 8,866 .txt files will be generated in the **/DATA_PATH/oxford-visualization/calib** folder.
 
----
 
-* Visualize lidar pointcloud:
+## Visualize lidar pointcloud
 ```
 python -B vis_lidar.py
 python -B vis_lidar_processed.py
 ```
+The first code will visualize the raw point cloud file **velodyne_right** and provide options to:
+1) Project bounding boxes onto the lidar frame.
+2) Project the lidar pointcloud onto the radar frame.
 
----
 
-* Visualize camera image:
+## Visualize camera image:
 ```
 python -B vis_camera.py
 python -B vis_camera_lidar.py
 ```
 The first code will perform **radar → camera** projection.  
 The second code will perform **radar → lidar → camera** projection.
-
----
-
 
 ## References
 1) [The Oxford Radar RobotCar Dataset: A Radar Extension to the Oxford RobotCar Dataset](https://arxiv.org/abs/1909.01300)
