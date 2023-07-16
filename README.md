@@ -26,20 +26,21 @@
         |-- velodyne_right.timestamps
         |-- ...
 ```
-* Prepare the radar & lidar data:
+* Prepare the processed radar & lidar data using MVDNet:
 ```
-cd /path/to/MVDNet
-python -B data/sdk/prepare_radar_data.py --data_path /path/to/2019-01-10-11-46-21-radar-oxford-10k --image_size 320 --resolution 0.2
-python -B data/sdk/prepare_lidar_data.py --data_path /path/to/2019-01-10-11-46-21-radar-oxford-10k
+cd /DATA_PATH/MVDNet
+python -B data/sdk/prepare_radar_data.py --data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k --image_size 320 --resolution 0.2
+python -B data/sdk/prepare_lidar_data.py --data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k
 ```
+Files will be generated in the **/DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k/processed** folder.
 
 ## Usage
 * Calculate and generate lidar → radar transform:
 ```
-cd /path/to/oxford-visualization
+cd /DATA_PATH/oxford-visualization
 python -B caculate_transform.py
 ```
-8,866 .txt files will be generated in the oxford-visualization/calib folder.
+8,866 .txt files will be generated in the **/DATA_PATH/oxford-visualization/calib** folder.
 
 ---
 
