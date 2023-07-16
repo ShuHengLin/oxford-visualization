@@ -1,12 +1,18 @@
 # visualization_Oxford_Radar_RobotCar_Dataset
 
 ## Prepare Data
-* Download the [Oxford Radar RobotCar Dataset](https://oxford-robotics-institute.github.io/radar-robotcar-dataset/datasets/2019-01-10-11-46-21-radar-oxford-10k).
-* Currently, only the vehicles in the first data record (Date: 10/01/2019, Time: 11:46:21 GMT) are labeled.
-* After unzipping the files, the directory should look like this:
+1) Download the [Oxford Radar RobotCar Dataset](https://oxford-robotics-institute.github.io/radar-robotcar-dataset/datasets/2019-01-10-11-46-21-radar-oxford-10k).
+   * Currently, only the vehicles in the first data record (Date: 10/01/2019, Time: 11:46:21 GMT) are labeled.
+2) Clone this repository.
+3) Clone the [MVDNet](https://github.com/qiank10/MVDNet) repository.
+4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository.
+5) After unzipping the files, the directory should look like this:
 ```
 # Oxford Radar RobotCar Data Record
 |-- DATA_PATH
+    |-- MVDNet
+    |-- oxford-visualization
+    |-- robotcar-dataset-sdk
     |-- 2019-01-10-11-46-21-radar-oxford-10k
         |-- gt
         |-- radar
@@ -20,6 +26,7 @@
         |-- velodyne_right.timestamps
         |-- ...
 ```
+
 
 ## Usage
 * AAA
