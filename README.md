@@ -44,6 +44,12 @@ python -B caculate_transform.py
 
 
 ## Visualize lidar pointcloud
+* Using rviz to visualize:
+```
+roscore
+rosrun rviz rviz -d rviz_config.rviz
+```
+
 ```
 python -B vis_lidar.py
 python -B vis_lidar_processed.py
@@ -62,6 +68,19 @@ python -B vis_camera_lidar.py
 ```
 The first code will perform **radar → camera** projection.  
 The second code will perform **radar → lidar → camera** projection.
+
+
+## Visualize radar image:
+```
+python -B vis_radar.py
+```
+Will visualize radar image and the 2d bounding boxes.
+
+
+## Visualize all:
+```
+python -B vis_all.py
+```
 
 
 ## References
