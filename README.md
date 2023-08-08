@@ -78,6 +78,11 @@ Will visualize radar image and the 2d bounding boxes.
 
 ## Visualize all
 ```
+roscore
+rosrun rviz rviz -d rviz_config.rviz
+```
+
+```
 python -B vis_all.py
 ```
 
