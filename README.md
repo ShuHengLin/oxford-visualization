@@ -77,6 +77,7 @@ Will visualize radar image and the 2d bounding boxes.
 
 
 ## Visualize all
+* Using rviz to visualize:
 ```
 roscore
 rosrun rviz rviz -d rviz_config.rviz
