@@ -29,28 +29,39 @@
 * Prepare the processed radar & lidar data using MVDNet:
 ```
 cd /DATA_PATH/MVDNet
-python -B data/sdk/prepare_radar_data.py --data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k --image_size 320 --resolution 0.2
-python -B data/sdk/prepare_lidar_data.py --data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k
+```
+```
+python -B data/sdk/prepare_radar_data.py \
+--data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k --image_size 320 --resolution 0.2
+```
+```
+python -B data/sdk/prepare_lidar_data.py \
+--data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k
 ```
 Files will be generated in the **/DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k/processed** folder.
   
 * Calculate and generate lidar → radar transform:
 ```
 cd /DATA_PATH/oxford-visualization
+```
+```
 python -B caculate_transform.py
 ```
-8,866 .txt files will be generated in the **/DATA_PATH/oxford-visualization/calib** folder.
+8,866 `.txt` files will be generated in the **/DATA_PATH/oxford-visualization/calib** folder.
 
 
 ## Visualize lidar pointcloud
 * Using rviz to visualize:
 ```
 roscore
+```
+```
 rosrun rviz rviz -d rviz_config.rviz
 ```
-
 ```
 python -B vis_lidar.py
+```
+```
 python -B vis_lidar_processed.py
 ```
 The first code will visualize the raw point cloud file **velodyne_right** and provide options to:
@@ -63,6 +74,8 @@ The second code will visualize the processed point cloud file **processed/lidar*
 ## Visualize camera image
 ```
 python -B vis_camera.py
+```
+```
 python -B vis_camera_lidar.py
 ```
 The first code will perform **radar → camera** projection.  
@@ -80,15 +93,18 @@ Will visualize radar image and the 2d bounding boxes.
 * Using rviz to visualize:
 ```
 roscore
+```
+```
 rosrun rviz rviz -d rviz_config.rviz
 ```
-
 ```
 python -B vis_all.py
 ```
 
+
 ## Video
 [![](https://img.youtube.com/vi/wvTzqsMHO6o/0.jpg)](https://youtu.be/wvTzqsMHO6o)
+
 
 ## References
 1) [The Oxford Radar RobotCar Dataset: A Radar Extension to the Oxford RobotCar Dataset](https://arxiv.org/abs/1909.01300)
