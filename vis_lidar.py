@@ -6,7 +6,7 @@ from lib.utils_data_loading import loading_timestamps
 
 import std_msgs.msg
 import sensor_msgs.point_cloud2 as pcl2
-from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import PointCloud2, PointField
 
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -23,19 +23,26 @@ TRANS_TO_RADAR_MAP = False
 lidar_right_dir = '/data_1TB_1/Oxford/2019-01-10-11-46-21-radar-oxford-10k/velodyne_right/'
 lidar_right_timestamps, radar_timestamps = loading_timestamps(lidar_right_dir)
 
-pointcloud_pub = rospy.Publisher('/pointcloud', PointCloud2, queue_size=10)
+
+header = std_msgs.msg.Header()
+header.frame_id = 'map'
+
+fields = [PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+          PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+          PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+          PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)]
+
+pointcloud_pub = rospy.Publisher('/pointcloud',   PointCloud2, queue_size=10)
 marker_pub     = rospy.Publisher('/detect_box3d', MarkerArray, queue_size=10)
 rospy.init_node('talker', anonymous=True)
 rate = rospy.Rate(1000)
+
+# ==================================================================================================================
 
 for i in tqdm(range(300, len(radar_timestamps))):
     
   if rospy.is_shutdown():
     break
-
-  header = std_msgs.msg.Header()
-  header.stamp = rospy.Time.now()
-  header.frame_id = 'map'
 
   # loading calib
   trans_matrix = np.matrix(np.zeros((4, 4)))
@@ -55,7 +62,7 @@ for i in tqdm(range(300, len(radar_timestamps))):
   else:
     scan_new = np.dot(rot_along_x, scan_new)
   scan[0:3] = scan_new[0:3]
-  pointcloud_msg = pcl2.create_cloud_xyz32(header, scan.T[:, 0:3])
+  pointcloud_msg = pcl2.create_cloud(header, fields, scan.T[:, 0:4])
 
 
   # loading label
@@ -81,4 +88,3 @@ for i in tqdm(range(300, len(radar_timestamps))):
   marker_pub.publish(marker_array)
   pointcloud_pub.publish(pointcloud_msg)
   rate.sleep()
-

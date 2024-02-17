@@ -2,27 +2,24 @@ import numpy as np
 from .transform import se3_transform
 
 # ==================================================================================================================
-"""
-def match_to_radar(radar_timestamp, src_timestamp):
-  dst_timestamps = []
-  src_timestamp_i = 0
-  for radar_timestamp_i in range(len(radar_timestamp)):
-    while src_timestamp[src_timestamp_i] <= radar_timestamp[radar_timestamp_i]:
-      src_timestamp_i += 1
-    dst_timestamps.append(int(src_timestamp[src_timestamp_i - 1]))
-  return dst_timestamps
-"""
-def match_to_radar(radar_timestamp, src_timestamp):
-  dst_timestamps = []
-  src_timestamp_i = 0
-  for radar_timestamp_i in range(len(radar_timestamp)):
-    while src_timestamp[src_timestamp_i] <= radar_timestamp[radar_timestamp_i]:
-      src_timestamp_i += 1
-    if (src_timestamp[src_timestamp_i] - radar_timestamp[radar_timestamp_i]) > (radar_timestamp[radar_timestamp_i] - src_timestamp[src_timestamp_i - 1]):
-      dst_timestamps.append(int(src_timestamp[src_timestamp_i - 1]))
-    elif (src_timestamp[src_timestamp_i] - radar_timestamp[radar_timestamp_i]) <= (radar_timestamp[radar_timestamp_i] - src_timestamp[src_timestamp_i - 1]):
-      dst_timestamps.append(int(src_timestamp[src_timestamp_i]))
-  return dst_timestamps
+
+def match_to_radar(radar_time, src_time):
+ 
+  dst_time = []
+  src_i = 0
+
+  for radar_i in range(len(radar_time)):
+
+    while src_time[src_i] <= radar_time[radar_i]:
+      src_i += 1
+
+    if abs(src_time[src_i] - radar_time[radar_i]) > abs(src_time[src_i - 1] - radar_time[radar_i]):
+      dst_time.append(int(src_time[src_i - 1]))
+
+    else:
+      dst_time.append(int(src_time[src_i]))
+
+  return dst_time
 
 # ==================================================================================================================
 
@@ -34,22 +31,22 @@ def loading_timestamps(path):
   sensor = path.strip().split('2019-01-10-11-46-21-radar-oxford-10k/')[1]
   sensor = sensor.strip().split('/')[0]
 
-  radar_timestamp = np.loadtxt(data_path + 'radar.timestamps')[:, 0]
+  radar_time = np.loadtxt(data_path + 'radar.timestamps')[:, 0].astype(int)
 
   if sensor == 'velodyne_right':
-    right_lidar_timestamp = np.loadtxt(data_path + 'velodyne_right.timestamps')[:, 0]
-    return match_to_radar(radar_timestamp, right_lidar_timestamp), radar_timestamp.astype(int)
+    right_lidar_time = np.loadtxt(data_path + 'velodyne_right.timestamps')[:, 0].astype(int)
+    return match_to_radar(radar_time, right_lidar_time), radar_time
 
   elif sensor == 'velodyne_left':
-    left_lidar_timestamp = np.loadtxt(data_path + 'velodyne_left.timestamps')[:, 0]
-    return match_to_radar(radar_timestamp, left_lidar_timestamp), radar_timestamp.astype(int)
+    left_lidar_time = np.loadtxt(data_path + 'velodyne_left.timestamps')[:, 0].astype(int)
+    return match_to_radar(radar_time, left_lidar_time), radar_time
 
   elif sensor == 'stereo':
-    stereo_timestamp = np.loadtxt(data_path + 'stereo.timestamps')[:, 0]
-    return match_to_radar(radar_timestamp, stereo_timestamp), radar_timestamp.astype(int)
+    stereo_time = np.loadtxt(data_path + 'stereo.timestamps')[:, 0].astype(int)
+    return match_to_radar(radar_time, stereo_time), radar_time
 
   else:
-    return radar_timestamp.astype(int)
+    return radar_time
 
 # ==================================================================================================================
 

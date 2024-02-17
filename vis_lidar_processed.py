@@ -6,7 +6,7 @@ from lib.utils_data_loading import loading_timestamps
 
 import std_msgs.msg
 import sensor_msgs.point_cloud2 as pcl2
-from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import PointCloud2, PointField
 
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -21,24 +21,31 @@ rot_along_x = np.array([[1,  0,  0, 0],
 lidar_dir = '/data_1TB_1/Oxford/2019-01-10-11-46-21-radar-oxford-10k/processed/lidar/'
 radar_timestamps = loading_timestamps(lidar_dir)
 
-pointcloud_pub = rospy.Publisher('/pointcloud', PointCloud2, queue_size=10)
+
+header = std_msgs.msg.Header()
+header.frame_id = 'map'
+
+fields = [PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+          PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+          PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+          PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)]
+
+pointcloud_pub = rospy.Publisher('/pointcloud',   PointCloud2, queue_size=10)
 marker_pub     = rospy.Publisher('/detect_box3d', MarkerArray, queue_size=10)
 rospy.init_node('talker', anonymous=True)
 rate = rospy.Rate(1000)
+
+# ==================================================================================================================
 
 for i in tqdm(range(300, len(radar_timestamps))):
 
   if rospy.is_shutdown():
     break
-    
-  header = std_msgs.msg.Header()
-  header.stamp = rospy.Time.now()
-  header.frame_id = 'map'
 
   # loading pointcloud
   scan = np.fromfile(lidar_dir + str(radar_timestamps[i]) + '.bin', dtype=np.float32).reshape((-1, 4)).T
   scan = np.dot(rot_along_x, scan).T
-  pointcloud_msg = pcl2.create_cloud_xyz32(header, scan[:, 0:3])
+  pointcloud_msg = pcl2.create_cloud(header, fields, scan[:, 0:4])
 
 
   # loading label
@@ -59,4 +66,3 @@ for i in tqdm(range(300, len(radar_timestamps))):
   marker_pub.publish(marker_array)
   pointcloud_pub.publish(pointcloud_msg)
   rate.sleep()
-
