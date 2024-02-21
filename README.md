@@ -4,16 +4,19 @@
 1) Download the [Oxford Radar RobotCar Dataset](https://oxford-robotics-institute.github.io/radar-robotcar-dataset/datasets/2019-01-10-11-46-21-radar-oxford-10k).
    * Currently, only the vehicles in the first data record (Date: 10/01/2019, Time: 11:46:21 GMT) are labeled.
 
-2) Clone this repository.
+2) Clone this repository:
+```
+git clone git@github.com:ShuHengLin/oxford-visualization.git && cd oxford-visualization
+```
 
 3) Clone the [MVDNet](https://github.com/qiank10/MVDNet) repository:
 ```
-cd /DATA_PATH/oxford-visualization && git clone git@github.com:qiank10/MVDNet.git
+git clone git@github.com:qiank10/MVDNet.git
 ```
 
 4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository and change the file name:
 ```
-cd /DATA_PATH/oxford-visualization && git clone git@github.com:ori-mrg/robotcar-dataset-sdk.git
+git clone git@github.com:ori-mrg/robotcar-dataset-sdk.git
 ```
 ```
 mv robotcar-dataset-sdk sdk
