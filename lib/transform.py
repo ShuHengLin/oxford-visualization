@@ -252,3 +252,12 @@ def frame_transform(src_ts, dst_ts, vo):
     else:
         rot_es, pos_es = inverse_transform(rot_se, pos_se)
         return rot_es, pos_es
+
+
+def to_matrix(rot, pos):
+  rot = np.matrix(rot.as_matrix())
+  pos = np.matrix(pos).T
+  rot2 = np.concatenate((rot, [[0, 0, 0]]), axis=0)
+  pos2 = np.concatenate((pos, [[1]]), axis=0)
+  matrix = np.concatenate((rot2, pos2), axis=1)
+  return matrix

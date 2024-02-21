@@ -33,9 +33,13 @@ models_dir = base_dir + 'oxford-visualization/sdk/models/'
 
 model = CameraModel(models_dir, image_dir)
 
-image_times = np.loadtxt(data_path + 'stereo.timestamps')[:, 0].astype(int)
-radar_times = np.loadtxt(data_path + 'radar.timestamps' )[:, 0].astype(int)[:8862]
-align_times = match_sensor(radar_times, image_times)
+image_times = np.loadtxt(data_path + 'stereo.timestamps'        )[:, 0].astype(int)
+lidar_times = np.loadtxt(data_path + 'velodyne_right.timestamps')[:, 0].astype(int)
+radar_times = np.loadtxt(data_path + 'radar.timestamps'         )[:, 0].astype(int)[:8862]
+
+align_times     = match_sensor(image_times, lidar_times)  # align lidar to camera
+align_times_cam = match_sensor(radar_times, image_times)
+align_times_lid = match_sensor(radar_times, align_times)
 
 # ==================================================================================================================
 
@@ -48,16 +52,23 @@ R = np.array([[ 0,  1,  0, 0],
 
 for i in tqdm(range(820, len(radar_times))):
 
-  # camera to radar transform
-  frame_rot, frame_pos = frame_transform(align_times[i], radar_times[i], lidar_odometry)
-  frame_rot, frame_pos = compose_transform(frame_rot, frame_pos, RADAR_INV_ROT, RADAR_INV_POS)
-  trans_matrix = to_matrix(frame_rot, frame_pos)
-  trans_matrix = np.dot(R, trans_matrix) # transform to radar
+  # lidar to camera transform
+  frame_rot, frame_pos = frame_transform(align_times_lid[i], align_times_cam[i], lidar_odometry)
+  frame_rot, frame_pos = compose_transform(RIGHT_LIDAR_ROT, RIGHT_LIDAR_POS, frame_rot, frame_pos)
+  trans_matrix1 = to_matrix(frame_rot, frame_pos)
 
 
   # loading image
-  img = load_image(image_dir + str(align_times[i]) + '.png', model)
+  img = load_image(image_dir + str(align_times_cam[i]) + '.png', model)
   img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+
+  # lidar to radar transform
+  frame_rot, frame_pos = frame_transform(align_times_lid[i], radar_times[i], lidar_odometry)
+  frame_rot, frame_pos = compose_transform(RIGHT_LIDAR_ROT, RIGHT_LIDAR_POS, frame_rot, frame_pos)
+  frame_rot, frame_pos = compose_transform(frame_rot, frame_pos, RADAR_INV_ROT, RADAR_INV_POS)
+  trans_matrix = to_matrix(frame_rot, frame_pos)
+  trans_matrix = np.dot(R, trans_matrix) # transform to radar
 
 
   # loading label
@@ -70,6 +81,7 @@ for i in tqdm(range(820, len(radar_times))):
     rot_y = np.array(line_str[14],    dtype=np.float32)
     box_3d = compute_box_3d(dim, loc, rot_y)
     box_3d = points_transform(box_3d, inverse_trans_matrix(trans_matrix))
+    box_3d = points_transform(box_3d, trans_matrix1)
 
     uv, _ = project_to_image(box_3d, model.G_camera_image, model.focal_length, model.principal_point, img.shape)
     if uv.shape[1] == 8:

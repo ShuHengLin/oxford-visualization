@@ -3,15 +3,35 @@
 ## Prepare Data
 1) Download the [Oxford Radar RobotCar Dataset](https://oxford-robotics-institute.github.io/radar-robotcar-dataset/datasets/2019-01-10-11-46-21-radar-oxford-10k).
    * Currently, only the vehicles in the first data record (Date: 10/01/2019, Time: 11:46:21 GMT) are labeled.
+
 2) Clone this repository.
-3) Clone the [MVDNet](https://github.com/qiank10/MVDNet) repository.
-4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository.
+
+3) Clone the [MVDNet](https://github.com/qiank10/MVDNet) repository:
+```
+cd /DATA_PATH/oxford-visualization && git clone git@github.com:qiank10/MVDNet.git
+```
+
+4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository and change the file name:
+```
+cd /DATA_PATH/oxford-visualization && git clone git@github.com:ori-mrg/robotcar-dataset-sdk.git
+```
+```
+mv robotcar-dataset-sdk sdk
+```
+
 5) After unzipping the files, the directory should look like this:
 ```
 |-- DATA_PATH
-    |-- MVDNet
     |-- oxford-visualization
-    |-- robotcar-dataset-sdk
+        |-- lib
+        |-- MVDNet
+        |-- sdk
+        |-- rviz_config.rviz
+        |-- vis_camera.py
+        |-- vis_camera_lidar_trans_to_camera.py
+        |-- vis_lidar.py
+        |-- ...
+
     |-- 2019-01-10-11-46-21-radar-oxford-10k
         |-- gt
         |-- radar
@@ -28,7 +48,7 @@
 
 * Prepare the processed radar & lidar data using MVDNet:
 ```
-cd /DATA_PATH/MVDNet
+cd /DATA_PATH/oxford-visualization/MVDNet
 ```
 ```
 python -B data/sdk/prepare_radar_data.py \
@@ -39,15 +59,7 @@ python -B data/sdk/prepare_lidar_data.py \
 --data_path /DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k
 ```
 Files will be generated in the **/DATA_PATH/2019-01-10-11-46-21-radar-oxford-10k/processed** folder.
-  
-* Calculate and generate lidar → radar transform:
-```
-cd /DATA_PATH/oxford-visualization
-```
-```
-python -B caculate_transform.py
-```
-8,866 `.txt` files will be generated in the **/DATA_PATH/oxford-visualization/calib** folder.
+
 
 
 ## Visualize lidar pointcloud
@@ -71,39 +83,30 @@ The first code will visualize the raw point cloud file **velodyne_right** and pr
 The second code will visualize the processed point cloud file **processed/lidar** and the bounding boxes.
 
 
+
 ## Visualize camera image
 ```
 python -B vis_camera.py
 ```
 ```
-python -B vis_camera_lidar.py
+python -B vis_camera_lidar_trans_to_camera.py
 ```
-The first code will perform **radar → camera** projection.  
-The second code will perform **radar → lidar → camera** projection.
+The first code will perform bounding boxes **radar → camera** projection.  
+The second code will perform bounding boxes **radar → lidar → camera** projection.
+
 
 
 ## Visualize radar image
 ```
-python -B vis_radar.py
+python -B vis_radar_processed.py
 ```
 Will visualize radar image and the 2d bounding boxes.
 
 
-## Visualize all
-* Using rviz to visualize:
-```
-roscore
-```
-```
-rosrun rviz rviz -d rviz_config.rviz
-```
-```
-python -B vis_all.py
-```
-
 
 ## Video
 [![](https://img.youtube.com/vi/wvTzqsMHO6o/0.jpg)](https://youtu.be/wvTzqsMHO6o)
+
 
 
 ## References

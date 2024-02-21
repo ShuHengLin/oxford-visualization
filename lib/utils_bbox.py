@@ -1,13 +1,13 @@
 import cv2
 import numpy as np
-from .utils_pointcloud import compute_box_3d, inverse_trans_matrix
+from .utils_pointcloud import rot_X, rot_Y, rot_Z, compute_box_3d, inverse_trans_matrix, points_transform, project_to_image
 
 # ==================================================================================================================
 
-face_idx = [[0, 1, 5, 4],
-            [1, 2, 6, 5],
-            [2, 3, 7, 6],
-            [3, 0, 4, 7]]
+face_idx = [[1, 2, 6, 5],   # front face
+            [0, 1, 5, 4],   # left face
+            [2, 3, 7, 6],   # back face
+            [3, 0, 4, 7]]   # right face
 
 def draw_box_3d(image, corners, c=(0, 255, 0)):
 

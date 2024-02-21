@@ -1,56 +1,36 @@
 import numpy as np
-from .transform import se3_transform
+from .transform import se3_transform, inverse_transform
 
 # ==================================================================================================================
 
-def match_to_radar(radar_time, src_time):
- 
-  dst_time = []
-  src_i = 0
+def load_extrinsic(extrinsics_dir):
+  """
+  RIGHT_LIDAR_EXTRINSICS = [-0.61153,  0.55676, -0.27023,  0.0027052, -0.041999, -3.1357]
+  LEFT_LIDAR_EXTRINSICS  = [-0.60072, -0.34077, -0.26837, -0.0053948, -0.041998, -3.1337]
+  RADAR_EXTRINSICS       = [-0.71813,     0.12, -0.54479,          0,      0.05,       0]
+  """
+  with open(extrinsics_dir + 'velodyne_right.txt') as extrinsics_file:
+    RIGHT_LIDAR_EXTRINSICS = [float(x) for x in next(extrinsics_file).split(' ')]
+    RIGHT_LIDAR_ROT, RIGHT_LIDAR_POS = se3_transform(RIGHT_LIDAR_EXTRINSICS)
+    RIGHT_LIDAR_INV_ROT, RIGHT_LIDAR_INV_POS = inverse_transform(RIGHT_LIDAR_ROT, RIGHT_LIDAR_POS)
 
-  for radar_i in range(len(radar_time)):
+  with open(extrinsics_dir + 'velodyne_left.txt') as extrinsics_file:
+    LEFT_LIDAR_EXTRINSICS = [float(x) for x in next(extrinsics_file).split(' ')]
+    LEFT_LIDAR_ROT, LEFT_LIDAR_POS = se3_transform(LEFT_LIDAR_EXTRINSICS)
+    LEFT_LIDAR_INV_ROT, LEFT_LIDAR_INV_POS = inverse_transform(LEFT_LIDAR_ROT, LEFT_LIDAR_POS)
 
-    while src_time[src_i] <= radar_time[radar_i]:
-      src_i += 1
+  with open(extrinsics_dir + 'radar.txt') as extrinsics_file:
+    RADAR_EXTRINSICS = [float(x) for x in next(extrinsics_file).split(' ')]
+    RADAR_ROT, RADAR_POS = se3_transform(RADAR_EXTRINSICS)
+    RADAR_INV_ROT, RADAR_INV_POS = inverse_transform(RADAR_ROT, RADAR_POS)
 
-    if abs(src_time[src_i] - radar_time[radar_i]) > abs(src_time[src_i - 1] - radar_time[radar_i]):
-      dst_time.append(int(src_time[src_i - 1]))
+  return RIGHT_LIDAR_ROT, RIGHT_LIDAR_POS, RIGHT_LIDAR_INV_ROT, RIGHT_LIDAR_INV_POS, \
+         LEFT_LIDAR_ROT,  LEFT_LIDAR_POS,  LEFT_LIDAR_INV_ROT,  LEFT_LIDAR_INV_POS, \
+         RADAR_ROT,       RADAR_POS,       RADAR_INV_ROT,       RADAR_INV_POS
 
-    else:
-      dst_time.append(int(src_time[src_i]))
-
-  return dst_time
-
-# ==================================================================================================================
-
-def loading_timestamps(path):
-
-  data_path = path.strip().split('2019-01-10-11-46-21-radar-oxford-10k/')[0]
-  data_path += '2019-01-10-11-46-21-radar-oxford-10k/'
-  
-  sensor = path.strip().split('2019-01-10-11-46-21-radar-oxford-10k/')[1]
-  sensor = sensor.strip().split('/')[0]
-
-  radar_time = np.loadtxt(data_path + 'radar.timestamps')[:, 0].astype(int)
-
-  if sensor == 'velodyne_right':
-    right_lidar_time = np.loadtxt(data_path + 'velodyne_right.timestamps')[:, 0].astype(int)
-    return match_to_radar(radar_time, right_lidar_time), radar_time
-
-  elif sensor == 'velodyne_left':
-    left_lidar_time = np.loadtxt(data_path + 'velodyne_left.timestamps')[:, 0].astype(int)
-    return match_to_radar(radar_time, left_lidar_time), radar_time
-
-  elif sensor == 'stereo':
-    stereo_time = np.loadtxt(data_path + 'stereo.timestamps')[:, 0].astype(int)
-    return match_to_radar(radar_time, stereo_time), radar_time
-
-  else:
-    return radar_time
-
-# ==================================================================================================================
 
 def load_lidar_odometry(data_path):
+
   lidar_odometry = np.genfromtxt(data_path + 'vo/vo.csv', delimiter=',')[1:]
   lidar_odometry_rot = []
   lidar_odometry_pos = []
@@ -60,8 +40,28 @@ def load_lidar_odometry(data_path):
     lidar_odometry_rot.append(sample_rot)
     lidar_odometry_pos.append(sample_pos)
     lidar_odometry_timestamp.append(int(sample[1]))
+
   lidar_odometry = {'rot':lidar_odometry_rot, 
                     'pos':lidar_odometry_pos,
                     'timestamp':lidar_odometry_timestamp}
   return lidar_odometry
 
+# ==================================================================================================================
+
+def match_sensor(radar_times, src_times):
+ 
+  dst_times = []
+  src_i = 0
+
+  for radar_i in range(len(radar_times)):
+
+    while src_times[src_i] <= radar_times[radar_i]:
+      src_i += 1
+
+    if abs(src_times[src_i] - radar_times[radar_i]) > abs(src_times[src_i - 1] - radar_times[radar_i]):
+      dst_times.append(int(src_times[src_i - 1]))
+
+    else:
+      dst_times.append(int(src_times[src_i]))
+
+  return np.array(dst_times).astype(int)
