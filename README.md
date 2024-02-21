@@ -11,18 +11,24 @@
 cd /DATA_PATH/oxford-visualization && git clone git@github.com:qiank10/MVDNet.git
 ```
 
-4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository.
+4) Clone the [RobotCar Dataset SDK](https://github.com/ori-mrg/robotcar-dataset-sdk) repository and change the file name:
 ```
 cd /DATA_PATH/oxford-visualization && git clone git@github.com:ori-mrg/robotcar-dataset-sdk.git
+```
+```
+mv robotcar-dataset-sdk sdk
 ```
 
 5) After unzipping the files, the directory should look like this:
 ```
 |-- DATA_PATH
     |-- oxford-visualization
+        |-- lib
         |-- MVDNet
-        |-- robotcar-dataset-sdk
+        |-- sdk
+        |-- rviz_config.rviz
         |-- vis_camera.py
+        |-- vis_camera_lidar_trans_to_camera.py
         |-- vis_lidar.py
         |-- ...
 
