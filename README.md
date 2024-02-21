@@ -103,7 +103,7 @@ The second code will perform bounding boxes **radar → lidar → camera** proje
 ```
 python -B vis_radar_processed.py
 ```
-Will visualize radar image and the 2d bounding boxes.
+Will visualize the processed radar image file **processed/radar** and the 2d bounding boxes.
 
 
 
