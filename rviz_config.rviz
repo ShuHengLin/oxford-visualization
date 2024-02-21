@@ -73,7 +73,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.10000000149011612
+      Size (m): 0.15000000596046448
       Style: Flat Squares
       Topic: /pointcloud
       Unreliable: false
@@ -125,7 +125,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 39.215843200683594
+      Distance: 85.21420288085938
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -133,17 +133,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -3.0876283645629883
-        Y: 1.2280462980270386
-        Z: 4.864952564239502
+        X: 1.232090950012207
+        Y: 2.3148207664489746
+        Z: 5.109833240509033
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8147972822189331
+      Pitch: -1.1597967147827148
       Target Frame: <Fixed Frame>
-      Yaw: 0.21226422488689423
+      Yaw: 1.5740910768508911
     Saved: ~
 Window Geometry:
   Displays:
