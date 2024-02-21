@@ -29,6 +29,8 @@ mv robotcar-dataset-sdk sdk
         |-- lib
         |-- MVDNet
         |-- sdk
+        |-- README.md
+        |-- project_lidar_to_camera.py
         |-- rviz_config.rviz
         |-- vis_camera.py
         |-- vis_camera_lidar_trans_to_camera.py
